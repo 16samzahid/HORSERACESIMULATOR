@@ -10,7 +10,7 @@ public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
     JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses, customiseHorses, betButton, placeBet, statsButton;
+    JButton saveHorses, customiseHorses, betButton, placeBet, statsButton, horseDone;
     JTextArea raceResults, statsResults;
     ArrayList<Race> races = new ArrayList<>();
     JComboBox<String> horseNames;
@@ -337,6 +337,39 @@ public class HorseRaceGUI extends JFrame {
         button.setBounds(200, 200, 100, 50);
         button.setSize(button.getPreferredSize());
         numberPanel.add(button);
+
+
+
+        //the bottom panel for the race
+        JPanel racePanel = new JPanel();
+        racePanel.setLayout(new BorderLayout());
+        racePanel.setBackground(Color.WHITE);
+        racePanel.setBounds(0, 150, 1200, 650);
+        racePanel.setBackground(new Color(190, 160, 230));
+        racePanel.add(scroll, BorderLayout.CENTER);
+
+        horseDone.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                customised = true;
+                int horses = horseNum.getValue();
+                int selectedTrackLength = Integer.parseInt((String) trackLength.getSelectedItem());
+                r.setHorseCount(horses);
+                r.setRaceLength(selectedTrackLength);
+                for (int i = 0; i < horses; i++) {
+                    String horseName = "Horse " + (i + 1);
+                    Horse h = new Horse((char) (i + 97), horseName);
+                    h.setColour(horseColours.getSelectedItem().toString());
+                    h.setSymbol(horseSymbols.getSelectedItem().toString().charAt(0));
+                    r.addHorse(h, i + 1);
+                }
+                horseFrame.setVisible(false);
+            }
+                
+        });
+
+        horseFrame.add(horseDone);
+
+
 
 
 
