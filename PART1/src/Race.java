@@ -198,6 +198,11 @@ public class Race
             System.out.println();
             System.out.println("And the winner is " + lane3Horse.getName());
         }
+        if(lane1Horse.hasFallen() && lane2Horse.hasFallen() && lane3Horse.hasFallen())
+        {
+            System.out.println();
+            System.out.println("All horses have fallen. No winner.");
+        }
     }
     
     /**
