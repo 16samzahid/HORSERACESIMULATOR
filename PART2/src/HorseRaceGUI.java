@@ -82,7 +82,15 @@ public class HorseRaceGUI extends JFrame {
         //declare a new race using values provided from sliders and dropdown
         r = new Race(trackLength.getSelectedIndex(), horseNum.getValue(), laneNum.getValue());
 
-        
+        //customise horse frame for customising horses
+        JFrame horseFrame = new JFrame();
+        horseFrame.setDefaultCloseOperation(horseFrame.DISPOSE_ON_CLOSE);
+        horseFrame.setSize(400, 400);
+        horseFrame.setTitle("Customise Horses");
+        horseFrame.setResizable(false);
+        horseFrame.setLayout(null);
+        horseFrame.getContentPane().setBackground(new Color(190, 160, 230));
+
 
     }
 
