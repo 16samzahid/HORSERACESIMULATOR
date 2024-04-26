@@ -10,7 +10,7 @@ public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
     JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses;
+    JButton saveHorses, customiseHorses;
     JTextArea raceResults;
     JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
@@ -159,6 +159,33 @@ public class HorseRaceGUI extends JFrame {
         horseFrame.add(horseSymbolLabel);
         horseFrame.add(horseSymbols);
         horseFrame.add(saveHorses);
+
+        customiseHorses = new JButton();
+        customiseHorses.setText("Customise Horses");
+        customiseHorses.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                horseNames.removeAllItems();
+                int horses = horseNum.getValue();
+                int selectedTrackLength = Integer.parseInt((String) trackLength.getSelectedItem());
+                r.setHorseCount(horses);
+                r.setRaceLength(selectedTrackLength);
+                for (int i = 0; i < horses; i++) {
+                    //String horseName = "Horse " + (i + 1);
+                    String horseName = horseList[i] == null ? "Horse " + (i + 1) : horseList[i].getName();
+                    Horse h = new Horse((char) (i + 97), horseName);
+                    //add the horse to the race
+                    r.addHorse(h, i + 1);
+                    //add the horse to the dropdown in horseframe
+                    horseNames.addItem(horseName);
+                    //add the horse to the horseList
+                    horseList[i] = h;
+                }
+                horseFrame.setVisible(true);
+            }
+        });
+
+
+        numberPanel.add(customiseHorses);
     }
 
 }

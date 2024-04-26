@@ -246,4 +246,12 @@ public class Race
             i = i + 1;
         }
     }
+
+    public void setHorseCount(int count) {
+      this.horseCount = count;
+   }
+
+   public void setRaceLength(int distance) {
+      this.raceLength = distance;
+   }
 }
