@@ -20,5 +20,36 @@ public class Horse
         this.name = horseName;
         this.confidence = horseConfidence;
     }
+
+    //accessor methods
+    //retrieve the confidence of the horse
+    public double getConfidence()
+    {
+        return this.confidence;
+    }
+    
+    //retrieve the distance travelled by the horse
+    public int getDistanceTravelled()
+    {
+        return this.distance;
+    }
+    
+    //retrieve the name of the horse
+    public String getName()
+    {
+        return this.name;
+    }
+    
+    //retrieve the symbol of the horse
+    public char getSymbol()
+    {
+        return this.symbol;
+    }
+
+    //retrieve whether the horse has fallen
+    public boolean hasFallen()
+    {
+        return this.fallen;
+    }
     
 }
