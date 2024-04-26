@@ -6,5 +6,11 @@
  */
 public class Horse
 {
+    //Fields of class Horse
+    private String name;
+    private char symbol;
+    private int distance;
+    private double confidence;
+    private boolean fallen;
     
 }
