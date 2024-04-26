@@ -121,7 +121,13 @@ public class Race
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
+                //confidence decreases by 1 when the horse falls
+                theHorse.setConfidence(theHorse.getConfidence()-0.1);
             }
+        }
+        if(raceWonBy(theHorse)){
+            theHorse.setConfidence(theHorse.getConfidence()+0.1);
+        
         }
     }
         
