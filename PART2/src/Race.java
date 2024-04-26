@@ -254,4 +254,8 @@ public class Race
    public void setRaceLength(int distance) {
       this.raceLength = distance;
    }
+
+   public Horse[] getHorses() {
+      return this.horses;
+   }
 }

@@ -10,10 +10,11 @@ public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
     JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses, customiseHorses;
+    JButton saveHorses, customiseHorses, betButton;
     JTextArea raceResults;
     JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
+    boolean customised = false;
     private Race r;
     HorseRaceGUI() {
 
@@ -186,6 +187,54 @@ public class HorseRaceGUI extends JFrame {
 
 
         numberPanel.add(customiseHorses);
+
+        //betting frame
+        // Add the betting button to the GUI constructor
+        betButton = new JButton("Place a Bet");
+        JLabel betLabel = new JLabel("Select horse:");
+        // Create a combo box to select a horse
+        JComboBox<String> horseComboBox = new JComboBox<>();
+        betButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int horses = horseNum.getValue();
+                int selectedTrackLength = Integer.parseInt((String) trackLength.getSelectedItem());
+                int lanes = laneNum.getValue();
+                if (!customised) {
+                    r.setHorseCount(horses);
+                    r.setRaceLength(selectedTrackLength);
+                    for (int i = 0; i < horses; i++) {
+                        String horseName = "Horse " + (i + 1);
+                        Horse h = new Horse((char) (i + 97), horseName);
+                        r.addHorse(h, i + 1);
+                    }
+                }
+                //otherwise set the customised horses using the values from the horseNames dropdown
+                else {
+                    r.setHorseCount(horses);
+                    r.setRaceLength(selectedTrackLength);
+                    for (int i = 0; i < horses; i++) {
+                        String horseName = (String) horseNames.getItemAt(i);
+                        Horse h = new Horse((char) (i + 97), horseName);
+                        r.addHorse(h, i + 1);
+                    }
+
+                }
+                // Clear the combo box before adding items to prevent duplicates
+                horseComboBox.removeAllItems();
+        
+                // Add items to the combo box
+                for (Horse horse : r.getHorses()) {
+                    if (horse != null) { // Check if the horse object is not null
+                        horseComboBox.addItem(horse.getName());
+                    }
+                }
+        
+                // Make the betting frame visible
+                bettingFrame.setVisible(true);
+            }
+        });
     }
+
+
 
 }
