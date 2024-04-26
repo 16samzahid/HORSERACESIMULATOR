@@ -51,5 +51,38 @@ public class Horse
     {
         return this.fallen;
     }
+
+    //mutator methods
+    //make the horse fall
+    public void fall()
+    {
+        this.fallen = true;
+    }
+    
+    //set the distance travelled by the horse to 0
+    public void goBackToStart()
+    {
+        this.distance = 0;
+    }
+    
+    //make the horse move forward
+    public void moveForward()
+    {
+        this.distance++;
+    }
+
+    //set the confidence of the horse
+    //@param newConfidence the new confidence of the horse
+    public void setConfidence(double newConfidence)
+    {
+        this.confidence = newConfidence;
+    }
+    
+    //set the symbol of the horse
+    //@param newSymbol the new symbol of the horse
+    public void setSymbol(char newSymbol)
+    {
+        this.symbol = newSymbol;
+    }
     
 }
