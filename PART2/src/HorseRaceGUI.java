@@ -255,6 +255,13 @@ public class HorseRaceGUI extends JFrame {
             }
         });
 
+        numberPanel.add(betButton);
+        
+        bettingFrame.setLayout(new FlowLayout());
+        bettingFrame.add(betLabel);
+        bettingFrame.add(horseComboBox);
+        bettingFrame.add(placeBet);
+        
     }
 
     // Method to retrieve the horse that was bet on
