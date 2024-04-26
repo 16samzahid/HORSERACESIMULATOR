@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import javax.swing.event.*;
 
 public class HorseRaceGUI extends JFrame {
+    JTextField horseName;
     JSlider horseNum, laneNum;
-    JComboBox<String> trackLength;
+    JComboBox<String> trackLength, horseSymbols, horseColours;
+    JButton saveHorses;
     JTextArea raceResults;
+    JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
     private Race r;
     HorseRaceGUI() {
@@ -91,7 +94,40 @@ public class HorseRaceGUI extends JFrame {
         horseFrame.setLayout(null);
         horseFrame.getContentPane().setBackground(new Color(190, 160, 230));
 
+        //create the betting frame
+        JFrame bettingFrame = new JFrame();
+        bettingFrame.setTitle("Place Bet");
+        bettingFrame.setSize(300, 200);
 
+        //selecting the horse to edit
+        JLabel selectHorseLabel = new JLabel("Select Horse: ");
+        selectHorseLabel.setBounds(50, 50, 100, 30);
+        horseNames = new JComboBox<>();
+        horseNames.setBounds(150, 50, 150, 30);
+
+        //editing the name
+        JLabel horseNameLabel = new JLabel("Horse Name: ");
+        horseNameLabel.setBounds(50, 100, 100, 30);
+        horseName = new JTextField();
+        horseName.setBounds(150, 100, 150, 30);
+
+        String[] symbols = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
+        horseSymbols = new JComboBox<>(symbols);
+        horseSymbols.setBounds(150, 200, 150, 30);
+        JLabel horseSymbolLabel = new JLabel("Horse Symbol: ");
+        horseSymbolLabel.setBounds(50, 200, 100, 30);
+
+        String[] colours = {"Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Black", "White"};
+        horseColours = new JComboBox<>(colours);
+        horseColours.setBounds(150, 150, 150, 30);
+        JLabel horseColourLabel = new JLabel("Horse Colour: ");
+        horseColourLabel.setBounds(50, 150, 100, 30);
+
+
+        saveHorses = new JButton();
+        saveHorses.setText("Save Horse");
+        //saveHorses.setSize(saveHorses.getPreferredSize());
+        saveHorses.setBounds(150, 250, 150, 50);
     }
 
 }
