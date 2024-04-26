@@ -9,13 +9,12 @@ import javax.swing.event.*;
 public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
-    JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses, customiseHorses, betButton, placeBet, statsButton, horseDone;
+    JButton createHorsesButton, startRaceButton, customiseHorses, saveHorses, horseDone, betButton, placeBet, statsButton;
+    JComboBox<String> trackLength, horseNames, horseColours, horseSymbols;
     JTextArea raceResults, statsResults;
-    ArrayList<Race> races = new ArrayList<>();
-    JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
     boolean customised = false;
+    ArrayList<Race> races = new ArrayList<>();
     private Race r;
     HorseRaceGUI() {
 
@@ -50,6 +49,7 @@ public class HorseRaceGUI extends JFrame {
         horseNum.setPaintTicks(true);
         horseNum.setPaintLabels(true);
         horseNum.setSnapToTicks(true);
+        //////////////////////////////////////////
 
         //the number of lanes that the user can select
         JLabel laneLabel = new JLabel("Number of Lanes: ");
@@ -70,6 +70,7 @@ public class HorseRaceGUI extends JFrame {
                 horseList = new Horse[horseNum.getValue()];
             }
         });
+        //////////////////////////////////////////
 
         //dropdown for track length
         JLabel trackLabel = new JLabel("Track Length: ");
@@ -84,22 +85,25 @@ public class HorseRaceGUI extends JFrame {
         numberPanel.add(horsesLabel);
         numberPanel.add(horseNum);
 
-        //declare a new race using values provided from sliders and dropdown
+
         r = new Race(trackLength.getSelectedIndex(), horseNum.getValue(), laneNum.getValue());
 
-        //customise horse frame for customising horses
+        //////////////////////////////////////////
+
+        //custimise horse frame
         JFrame horseFrame = new JFrame();
-        horseFrame.setDefaultCloseOperation(horseFrame.DISPOSE_ON_CLOSE);
+        //horseFrame.setDefaultCloseOperation(horseFrame.EXIT_ON_CLOSE);
         horseFrame.setSize(400, 400);
         horseFrame.setTitle("Customise Horses");
         horseFrame.setResizable(false);
         horseFrame.setLayout(null);
         horseFrame.getContentPane().setBackground(new Color(190, 160, 230));
 
-        //create the betting frame
+
         JFrame bettingFrame = new JFrame();
         bettingFrame.setTitle("Place Bet");
         bettingFrame.setSize(300, 200);
+        //bettingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //selecting the horse to edit
         JLabel selectHorseLabel = new JLabel("Select Horse: ");
@@ -130,6 +134,7 @@ public class HorseRaceGUI extends JFrame {
         saveHorses.setText("Save Horse");
         //saveHorses.setSize(saveHorses.getPreferredSize());
         saveHorses.setBounds(150, 250, 150, 50);
+        //////////////////////////////////////////
         saveHorses.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 String horseNameText = horseName.getText();
@@ -151,7 +156,12 @@ public class HorseRaceGUI extends JFrame {
             }
         });
 
-        //adding things to the horse frame
+        horseDone = new JButton();
+        horseDone.setText("Done");
+        horseDone.setBounds(150, 300, 150, 50);
+
+        
+
         horseFrame.add(selectHorseLabel);
         horseFrame.add(horseNames);
         horseFrame.add(horseNameLabel);
@@ -161,6 +171,7 @@ public class HorseRaceGUI extends JFrame {
         horseFrame.add(horseSymbolLabel);
         horseFrame.add(horseSymbols);
         horseFrame.add(saveHorses);
+        
 
         customiseHorses = new JButton();
         customiseHorses.setText("Customise Horses");
@@ -256,8 +267,9 @@ public class HorseRaceGUI extends JFrame {
             }
         });
 
+
         numberPanel.add(betButton);
-        
+
         bettingFrame.setLayout(new FlowLayout());
         bettingFrame.add(betLabel);
         bettingFrame.add(horseComboBox);
@@ -339,6 +351,8 @@ public class HorseRaceGUI extends JFrame {
         numberPanel.add(button);
 
 
+        //end of number panel
+
 
         //the bottom panel for the race
         JPanel racePanel = new JPanel();
@@ -370,11 +384,6 @@ public class HorseRaceGUI extends JFrame {
         horseFrame.add(horseDone);
 
 
-
-
-
-
-        //adding things to the main frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1200, 800);
         this.setTitle("Horse Race Simulator");
@@ -384,7 +393,13 @@ public class HorseRaceGUI extends JFrame {
         this.setLayout(null);
         this.setIconImage(icon.getImage());
         this.add(numberPanel);
+        this.add(racePanel);
 
+
+
+    }
+    public JTextArea getRaceResults() {
+        return raceResults;
     }
 
     // Method to retrieve the horse that was bet on
@@ -403,5 +418,4 @@ public class HorseRaceGUI extends JFrame {
         // If no matching horse was found, return null
         return null;
     }
-
 }
