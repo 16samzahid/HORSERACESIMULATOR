@@ -148,6 +148,17 @@ public class HorseRaceGUI extends JFrame {
 
             }
         });
+
+        //adding things to the horse frame
+        horseFrame.add(selectHorseLabel);
+        horseFrame.add(horseNames);
+        horseFrame.add(horseNameLabel);
+        horseFrame.add(horseName);
+        horseFrame.add(horseColourLabel);
+        horseFrame.add(horseColours);
+        horseFrame.add(horseSymbolLabel);
+        horseFrame.add(horseSymbols);
+        horseFrame.add(saveHorses);
     }
 
 }
