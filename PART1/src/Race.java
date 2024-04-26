@@ -152,6 +152,18 @@ public class Race
         
         multiplePrint('=',raceLength+3); //top edge of track
         System.out.println();
+
+        printLane(lane1Horse);
+        System.out.print(" " + lane1Horse.getName() + " (Current confidence: " + String.format("%.1f", lane1Horse.getConfidence()) + ")");
+        System.out.println();
+        
+        printLane(lane2Horse);
+        System.out.print(" " + lane2Horse.getName() + " (Current confidence: " + String.format("%.1f", lane2Horse.getConfidence()) + ")");
+        System.out.println();
+        
+        printLane(lane3Horse);
+        System.out.print(" " + lane3Horse.getName() + " (Current confidence: " + String.format("%.1f", lane3Horse.getConfidence()) + ")");
+        System.out.println();
         
         printLane(lane1Horse);
         System.out.println();
