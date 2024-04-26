@@ -10,7 +10,7 @@ public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
     JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses, customiseHorses, betButton;
+    JButton saveHorses, customiseHorses, betButton, placeBet;
     JTextArea raceResults;
     JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
@@ -233,8 +233,45 @@ public class HorseRaceGUI extends JFrame {
                 bettingFrame.setVisible(true);
             }
         });
+
+        //creating a place bet button
+        placeBet = new JButton("Place Bet");
+        placeBet.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("Place Bet button clicked");
+                // Get the selected horse from the combo box
+                String selectedHorse = (String) horseComboBox.getSelectedItem();
+                int horseItem = horseComboBox.getSelectedIndex();
+                Horse h = getSelectedHorse(horseComboBox);
+                // Set the bettedOn property of the selected horse to true
+                r.getHorses()[horseItem].placeBet();
+                //retreive the horse
+                // Set the placedBet
+                r.setPlacedBet(true, h);
+                // Display a message dialog with the selected horse
+                JOptionPane.showMessageDialog(null, "You have placed a bet on " + selectedHorse);
+                // Close the betting frame
+                bettingFrame.setVisible(false);
+            }
+        });
+
     }
 
-
+    // Method to retrieve the horse that was bet on
+    public Horse getSelectedHorse(JComboBox<String> horseComboBox) {
+        // Get the selected horse name from the JComboBox
+        String selectedHorseName = (String) horseComboBox.getSelectedItem();
+        
+        // Loop through the list of horses in the race
+        for (Horse horse : r.getHorses()) {
+            // If the horse's name matches the selected horse name, return that horse
+            if (horse != null && horse.getName().equals(selectedHorseName)) {
+                return horse;
+            }
+        }
+        
+        // If no matching horse was found, return null
+        return null;
+    }
 
 }

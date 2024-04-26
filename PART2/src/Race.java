@@ -19,6 +19,7 @@ public class Race
     private int horseCount;
     private int lanes;
     private boolean finished = false;
+    private boolean placedBet = false;
     /**
      * Constructor for objects of class Race
      * Initially there are no horses in the lanes
@@ -258,4 +259,27 @@ public class Race
    public Horse[] getHorses() {
       return this.horses;
    }
+
+   public void setPlacedBet(boolean placedBetValue, Horse h) {
+      // Clear the bet from any previously betted horse
+      clearAllBets();
+      
+      // Place the bet on the selected horse
+      for(int i = 0; i < horseCount; i++) {
+          if(h == horses[i]) {
+              horses[i].placeBet();
+          }
+      }
+      
+      this.placedBet = placedBetValue;
+   }
+
+   // Method to clear the bet from all horses
+   private void clearAllBets() {
+      for(int i = 0; i < horseCount; i++) {
+         if(horses[i] != null) {
+            horses[i].removeBet();
+         }
+      }
+}
 }

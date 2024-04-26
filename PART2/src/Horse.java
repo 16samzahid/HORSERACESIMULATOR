@@ -26,6 +26,18 @@ public class Horse
         this.colour = "Red";
     }
 
+    public void placeBet() {
+        this.bettedOn = true;
+    }
+
+    public void removeBet() {
+        this.bettedOn = false;
+    }
+
+    public boolean isBettedOn() {
+        return this.bettedOn;
+    }
+
     public void setColour(String newColour) {
         this.colour = newColour;
     }
