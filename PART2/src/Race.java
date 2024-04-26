@@ -1,67 +1,95 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.io.PrintStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JTextArea;
 
-import java.io.PrintStream;
-import java.lang.Math;
+public class Race{
+   private int raceLength;
+   private Horse[] horses = new Horse[5]; //max horses is 5
+   private int horseCount;
+   private int lanes;
+   private boolean finished = false;
+   private boolean placedBet = false;
+   //private int lanes;
 
-/**
- * A three-horse race, each horse running in its own lane
- * for a given distance
- * 
- * @author McFarewell
- * @version 1.0
- */
-public class Race
-{
-    private int raceLength;
-    private Horse[] horses = new Horse[5]; //max horses is 5
-    private int horseCount;
-    private int lanes;
-    private boolean finished = false;
-    private boolean placedBet = false;
-    /**
-     * Constructor for objects of class Race
-     * Initially there are no horses in the lanes
-     * 
-     * @param distance the length of the racetrack (in metres/yards...)
-     * @param count the number of horses in the race
-     * @param lanes the number of lanes in the race
-     */
-    public Race(int distance, int count, int lanes) {
-        //horses = new Horse[count];
-        this.raceLength = distance;
-        this.horseCount = count;
-        this.lanes = lanes;
-        //initialize the horses array to null
-        for(int i = 0; i < 5; ++i) {
-           this.horses[i] = null;
-        }
-    }
-    
-    /**
-     * Adds a horse to the race in a given lane
-     * 
-     * @param theHorse the horse to be added to the race
-     * @param laneNumber the lane that the horse will be added to
-     */
-    public void addHorse(Horse theHorse, int laneNumber) {
-        if (laneNumber > 0 && laneNumber < 5) {
-           this.horses[laneNumber - 1] = theHorse;
-        } else {
-           System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
-        }
+   public Race(int distance, int count, int lanes) {
+      //horses = new Horse[count];
+      this.raceLength = distance;
+      this.horseCount = count;
+      this.lanes = lanes;
+      //initialize the horses array to null
+      for(int i = 0; i < 5; ++i) {
+         this.horses[i] = null;
+      }
+      for (int i = 0; i < lanes; i++) {
+         this.horses[i] = new Horse('z', "EMPTY LANE");
+      }
+   }
+
+   public Race(int i) {
+    //TODO Auto-generated constructor stub
+   }
+
+   public boolean hasPlacedBet() {
+      return this.placedBet;
+   }
+
+   public void setPlacedBet(boolean placedBetValue, Horse h) {
+      // Clear the bet from any previously betted horse
+      clearAllBets();
+      
+      // Place the bet on the selected horse
+      for(int i = 0; i < horseCount; i++) {
+          if(h == horses[i]) {
+              horses[i].placeBet();
+          }
+      }
+      
+      this.placedBet = placedBetValue;
+   }
+   
+   // Method to clear the bet from all horses
+   private void clearAllBets() {
+         for(int i = 0; i < horseCount; i++) {
+            if(horses[i] != null) {
+               horses[i].removeBet();
+            }
+         }
+   }
   
-    }
-    
-    /**
-     * Start the race
-     * The horse are brought to the start and
-     * then repeatedly moved forward until the 
-     * race is finished
-     */
-    //startRace method which is called in HorseRaceGUI.java to start the race
-    public void startRace() {
+
+   public boolean isFinished() {
+      return this.finished;
+   }
+
+   public void setHorseCount(int count) {
+      this.horseCount = count;
+   }
+
+   public void setRaceLength(int distance) {
+      this.raceLength = distance;
+   }
+
+   public Horse[] getHorses() {
+      return this.horses;
+   }
+
+   public int getRaceLength() {
+      return this.raceLength;
+   }
+
+   public void addHorse(Horse theHorse, int laneNumber) {
+      if (laneNumber > 0 && laneNumber < 5) {
+         this.horses[laneNumber - 1] = theHorse;
+      } else {
+         System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
+      }
+
+   }
+
+   //startRace method which is called in HorseRaceGUI.java to start the race
+   public void startRaceGUI(JTextArea raceResults, JTextArea stats, int raceIndex) {
       //boolean finished = false;
       //Horse winningHorse = null;
       //for loop to reset the horses to the start
@@ -81,7 +109,7 @@ public class Race
          }
 
          //print the race
-         this.printRace();
+         this.printRace(raceResults, stats, raceIndex);
 
 
          //check if any of the horses have won the race yet
@@ -112,68 +140,39 @@ public class Race
          } catch (Exception var5) {
          }
       }
+      printStats(stats, raceIndex);
 
    }
-    
-    /**
-     * Randomly make a horse move forward or fall depending
-     * on its confidence rating
-     * A fallen horse cannot move
-     * 
-     * @param theHorse the horse to be moved
-     */
-    private void moveHorse(Horse theHorse)
-    {
-        //if the horse has fallen it cannot move, 
-        //so only run if it has not fallen
-        
-        if  (!theHorse.hasFallen())
-        {
-            //the probability that the horse will move forward depends on the confidence;
-            if (Math.random() < theHorse.getConfidence())
-            {
-               theHorse.moveForward();
-            }
-            
-            //the probability that the horse will fall is very small (max is 0.1)
-            //but will also will depends exponentially on confidence 
-            //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
-            {
-                theHorse.fall();
-                //confidence decreases by 1 when the horse falls
-                theHorse.setConfidence(theHorse.getConfidence()-0.1);
-            }
-        }
-        if(raceWonBy(theHorse)){
-            theHorse.setConfidence(theHorse.getConfidence()+0.1);
-        
-        }
-    }
-        
-    /** 
-     * Determines if a horse has won the race
-     *
-     * @param theHorse The horse we are testing
-     * @return true if the horse has won, false otherwise.
-     */
-    private boolean raceWonBy(Horse theHorse)
-    {
-        if (theHorse.getDistanceTravelled() == raceLength)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    /***
-     * Print the race on the terminal
-     */
-    private void printRace() {
+
+   private void moveHorse(Horse theHorse) {
+      //if the horse has not fallen, then move the horse forward
+      if (!theHorse.hasFallen()) {
+         //if the random number is less than the confidence, then move the horse forward
+         if (Math.random() < theHorse.getConfidence()) {
+            theHorse.moveForward();
+         }
+         //if the horse has fallen, then set the confidence to 0.1 less than the current confidence
+         if (Math.random() < 0.05 * theHorse.getConfidence() * theHorse.getConfidence() && theHorse.getConfidence() > 0.1){
+            theHorse.fall();
+            theHorse.setConfidence(theHorse.getConfidence() - 0.1);
+         }
+      }
+      //if the horse won the race, then set the confidence to 0.1 more than the current confidence
+      if (this.raceWonBy(theHorse)&& theHorse.getConfidence() < 1.0) {
+         theHorse.setConfidence(theHorse.getConfidence() + 0.1);
+      }
+
+   }
+
+   private boolean raceWonBy(Horse theHorse) {
+      return theHorse.getDistanceTravelled() == this.raceLength;
+   }
+
+   private void printRace(JTextArea raceResults, JTextArea stats, int raceIndex) {
+      //JTextArea raceResults = gui.getRaceResults();
+      raceResults.setText("");
       this.multiplePrint('=', this.raceLength + 3);
+      //raceResults.append("\n");
       System.out.println();
 
       int i;
@@ -191,95 +190,128 @@ public class Race
             }
             System.out.println();
          }
+         // else {
+         //    this.printLane(this.horses[i]);
+         //    PrintStream var10000 = System.out;
+         //    var10000.print("EMPTY LANE");
+         //    System.out.println();
+         // }
       }
-    }
-    
-    /**
-     * print a horse's lane during the race
-     * for example
-     * |           X                      |
-     * to show how far the horse has run
-     */
-    private void printLane(Horse theHorse)
-    {
-        //calculate how many spaces are needed before
-        //and after the horse
-        int spacesBefore = theHorse.getDistanceTravelled();
-        int spacesAfter = raceLength - theHorse.getDistanceTravelled();
-        
-        //print a | for the beginning of the lane
-        System.out.print('|');
-        
-        //print the spaces before the horse
-        multiplePrint(' ',spacesBefore);
-        
-        //if the horse has fallen then print dead
-        //else print the horse's symbol
-        if(theHorse.hasFallen())
-        {
-            System.out.print('\u2322');
-        }
-        else
-        {
-            System.out.print(theHorse.getSymbol());
-        }
-        
-        //print the spaces after the horse
-        multiplePrint(' ',spacesAfter);
-        
-        //print the | for the end of the track
-        System.out.print('|');
-    }
-        
-    
-    /***
-     * print a character a given number of times.
-     * e.g. printmany('x',5) will print: xxxxx
-     * 
-     * @param aChar the character to Print
-     */
-    private void multiplePrint(char aChar, int times)
-    {
-        int i = 0;
-        while (i < times)
-        {
-            System.out.print(aChar);
-            i = i + 1;
-        }
-    }
 
-    public void setHorseCount(int count) {
-      this.horseCount = count;
-   }
+      this.multiplePrint('=', this.raceLength + 3);
+      System.out.println();
 
-   public void setRaceLength(int distance) {
-      this.raceLength = distance;
-   }
-
-   public Horse[] getHorses() {
-      return this.horses;
-   }
-
-   public void setPlacedBet(boolean placedBetValue, Horse h) {
-      // Clear the bet from any previously betted horse
-      clearAllBets();
-      
-      // Place the bet on the selected horse
-      for(int i = 0; i < horseCount; i++) {
-          if(h == horses[i]) {
-              horses[i].placeBet();
-          }
-      }
-      
-      this.placedBet = placedBetValue;
-   }
-
-   // Method to clear the bet from all horses
-   private void clearAllBets() {
-      for(int i = 0; i < horseCount; i++) {
-         if(horses[i] != null) {
-            horses[i].removeBet();
+      //printing the winning horse
+      for(i = 0; i < lanes; ++i) {
+         if (this.horses[i] != null && this.raceWonBy(this.horses[i])) {
+            System.out.println();
+            Horse var4 = this.horses[i];
+            System.out.println("And the winner is " + var4.getName() + "!");
          }
       }
+
+
+
+      // Inside the printRace() method in the Race class
+      if (this.horses[i] != null && this.raceWonBy(this.horses[i]) && placedBet) {
+         if (this.horses[i].isBettedOn()) {
+            System.out.println();
+            Horse var4 = this.horses[i];
+            System.out.println("Congratulations! You have won your bet on " + var4.getName() + "!");
+         } else {
+            System.out.println();
+            System.out.println("Sorry, you lost your bet. Better luck next time!");
+         }
+      }
+
+
+      boolean allFallen = true;
+
+      for(int n = 0; n < horseCount; ++n) {
+         if (this.horses[n] != null && !this.horses[n].hasFallen()) {
+            allFallen = false;
+         }
+      }
+
+      if (allFallen) {
+         System.out.println();
+         System.out.println("All horses have fallen. No winner.");
+      }
+
+      //raceResults.append("Frame: ");
+      //System.out.print("f");
+
+   }
+
+   private void printLane(Horse theHorse) {
+      int spacesBefore = theHorse.getDistanceTravelled();
+      int spacesAfter = this.raceLength - theHorse.getDistanceTravelled();
+      System.out.print('|');
+      this.multiplePrint(' ', spacesBefore);
+      if (theHorse.hasFallen()) {
+         System.out.print('X');
+      } 
+      else if (theHorse.getSymbol() == 'z') {
+         System.out.print(' ');
+      }
+      else {
+         System.out.print(theHorse.getSymbol());
+      }
+
+      this.multiplePrint(' ', spacesAfter);
+      System.out.print('|');
+   }
+
+   private void multiplePrint(char aChar, int times) {
+      for(int i = 0; i < times; ++i) {
+         System.out.print(aChar);
+      }
+
+   }
+
+   public void printStats(JTextArea stats, int raceIndex) {
+      if(raceIndex == 0){
+         stats.append("Race Statistics:");
+      }
+      stats.append("\n");
+      stats.append("Race " + (raceIndex) + " Statistics:");
+      stats.append("\n");
+      stats.append("---------------");
+      stats.append("\n");
+
+      // Find the winning horse
+      Horse winningHorse = null;
+      double winningSpeed = Double.MIN_VALUE;
+      for (int i = 0; i < horseCount; i++) {
+          Horse horse = horses[i];
+          if (horse != null) {
+              double speed = (double) horse.getDistanceTravelled() / (double) raceLength;
+              stats.append(horse.getName() + ": Speed = " + String.format("%.2f", speed) + " units/s");
+              stats.append("\n");
+              if (speed > winningSpeed) {
+                  winningSpeed = speed;
+                  winningHorse = horse;
+              }
+          }
+      }
+
+      // Print time taken for winning horse to complete the race
+      if (winningHorse != null) {
+          int winningTime = winningHorse.getDistanceTravelled(); // Distance is equivalent to time in this simulation
+          long minutes = TimeUnit.SECONDS.toMinutes(winningTime);
+          long seconds = winningTime - TimeUnit.MINUTES.toSeconds(minutes);
+          stats.append("Winner: " + winningHorse.getName() + ", Speed = " + String.format("%.2f", winningSpeed) + " units/s, Time = " + minutes + " minutes, " + seconds + " seconds");
+          stats.append("\n");
+         } else {
+          stats.append("No horse won the race.");
+      }
+      stats.append("\n");
+   }
+
+public void startRace() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'startRace'");
 }
+   
+
 }

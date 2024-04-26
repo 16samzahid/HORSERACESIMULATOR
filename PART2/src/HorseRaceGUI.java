@@ -12,6 +12,7 @@ public class HorseRaceGUI extends JFrame {
     JComboBox<String> trackLength, horseSymbols, horseColours;
     JButton saveHorses, customiseHorses, betButton, placeBet, statsButton;
     JTextArea raceResults, statsResults;
+    ArrayList<Race> races = new ArrayList<>();
     JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
     boolean customised = false;
@@ -287,6 +288,58 @@ public class HorseRaceGUI extends JFrame {
             }
         });
         numberPanel.add(statsButton);
+
+
+
+        //start race button
+        JButton button = new JButton();
+        button.setText("Start Race");
+        button.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                int horses = horseNum.getValue();
+                int selectedTrackLength = Integer.parseInt((String) trackLength.getSelectedItem());
+                int lanes = laneNum.getValue();
+                int lastIndex = races.size() + 1;
+                //String lastIndexString = String.valueOf(lastIndex);
+                r = new Race(selectedTrackLength, horses, lanes);
+                races.add(r); //add the race to the arraylist of races each time.
+                //r.setRaceLength(selectedTrackLength);
+                //r.setHorseCount(horses);
+                //if the horses havent been customised, set some defualt names and add them
+                if (!customised) {
+                    r.setHorseCount(horses);
+                    r.setRaceLength(selectedTrackLength);
+                    for (int i = 0; i < horses; i++) {
+                        String horseName = "Horse " + (i + 1);
+                        Horse h = new Horse((char) (i + 97), horseName);
+                        r.addHorse(h, i + 1);
+                    }
+                }
+                //otherwise set the customised horses using the values from the horseNames dropdown
+                else {
+                    r.setHorseCount(horses);
+                    r.setRaceLength(selectedTrackLength);
+                    for (int i = 0; i < horses; i++) {
+                        String horseName = (String) horseNames.getItemAt(i);
+                        //String symbol = (String) horseSymbols.getItemAt(i);
+                        Horse h = new Horse((char) (i+97) , horseName);
+                        r.addHorse(h, i + 1);
+                    }
+
+                }
+                new Thread
+                (() ->
+                    {
+                        r.startRaceGUI(raceResults, statsResults, lastIndex);
+                    }).start();
+            }
+        });
+        button.setBounds(200, 200, 100, 50);
+        button.setSize(button.getPreferredSize());
+        numberPanel.add(button);
+
+
+
 
         //adding things to the main frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
