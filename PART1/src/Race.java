@@ -163,7 +163,23 @@ public class Race
         System.out.println();
         
         multiplePrint('=',raceLength+3); //bottom edge of track
-        System.out.println();    
+        System.out.println();   
+        
+        if (raceWonBy(lane1Horse))
+        {
+            System.out.println();
+            System.out.println("And the winner is " + lane1Horse.getName());
+        }
+        else if (raceWonBy(lane2Horse))
+        {
+            System.out.println();
+            System.out.println("And the winner is " + lane2Horse.getName());
+        }
+        else if (raceWonBy(lane3Horse))
+        {
+            System.out.println();
+            System.out.println("And the winner is " + lane3Horse.getName());
+        }
     }
     
     /**
