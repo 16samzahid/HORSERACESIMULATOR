@@ -8,6 +8,7 @@ import javax.swing.event.*;
 
 public class HorseRaceGUI extends JFrame {
     JSlider horseNum, laneNum;
+    JComboBox<String> trackLength;
     JTextArea raceResults;
     Horse[] horseList = new Horse[5];
     HorseRaceGUI() {
@@ -63,5 +64,18 @@ public class HorseRaceGUI extends JFrame {
                 horseList = new Horse[horseNum.getValue()];
             }
         });
+
+        //dropdown for track length
+        JLabel trackLabel = new JLabel("Track Length: ");
+        String[] lengths = {"5", "10", "15", "20", "25", "30", "35", "40", "45", "50"};
+        trackLength = new JComboBox<>(lengths);
+
+        
+        numberPanel.add(trackLabel);
+        numberPanel.add(trackLength);
+        numberPanel.add(laneLabel);
+        numberPanel.add(laneNum);
+        numberPanel.add(horsesLabel);
+        numberPanel.add(horseNum);
     }
 }
