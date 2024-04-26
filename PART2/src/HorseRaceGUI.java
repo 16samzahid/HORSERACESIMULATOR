@@ -10,8 +10,8 @@ public class HorseRaceGUI extends JFrame {
     JTextField horseName;
     JSlider horseNum, laneNum;
     JComboBox<String> trackLength, horseSymbols, horseColours;
-    JButton saveHorses, customiseHorses, betButton, placeBet;
-    JTextArea raceResults;
+    JButton saveHorses, customiseHorses, betButton, placeBet, statsButton;
+    JTextArea raceResults, statsResults;
     JComboBox<String> horseNames;
     Horse[] horseList = new Horse[5];
     boolean customised = false;
@@ -261,7 +261,44 @@ public class HorseRaceGUI extends JFrame {
         bettingFrame.add(betLabel);
         bettingFrame.add(horseComboBox);
         bettingFrame.add(placeBet);
-        
+
+        JFrame statsFrame = new JFrame();
+        statsFrame.setDefaultCloseOperation(statsFrame.DISPOSE_ON_CLOSE);
+        statsFrame.setTitle("View Stats");
+        statsFrame.setSize(400, 400);
+        statsFrame.setResizable(false);
+        statsFrame.setLayout(null);
+        statsFrame.getContentPane().setBackground(new Color(190, 160, 230));
+        statsResults = new JTextArea();
+        statsResults.setEditable(false);
+        statsResults.setBackground(Color.WHITE);
+        statsResults.setForeground(Color.BLACK);
+        statsResults.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        JScrollPane statsScroll = new JScrollPane(statsResults);
+        statsScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        statsScroll.setBounds(0, 0, 400, 400);
+        statsFrame.add(statsScroll);
+        //stats button
+        statsButton = new JButton();
+        statsButton.setText("View Stats");
+        statsButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                statsFrame.setVisible(true);
+            }
+        });
+        numberPanel.add(statsButton);
+
+        //adding things to the main frame
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(1200, 800);
+        this.setTitle("Horse Race Simulator");
+        this.setResizable(false);
+        this.setVisible(true);
+        ImageIcon icon = new ImageIcon("images/horse.png"); 
+        this.setLayout(null);
+        this.setIconImage(icon.getImage());
+        this.add(numberPanel);
+
     }
 
     // Method to retrieve the horse that was bet on
