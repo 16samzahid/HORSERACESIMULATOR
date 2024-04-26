@@ -26,6 +26,10 @@ public class Horse
         this.colour = "Red";
     }
 
+    public void setColour(String newColour) {
+        this.colour = newColour;
+    }
+
     //accessor methods
     //retrieve the confidence of the horse
     public double getConfidence()

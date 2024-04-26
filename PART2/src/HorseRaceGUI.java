@@ -128,6 +128,26 @@ public class HorseRaceGUI extends JFrame {
         saveHorses.setText("Save Horse");
         //saveHorses.setSize(saveHorses.getPreferredSize());
         saveHorses.setBounds(150, 250, 150, 50);
+        saveHorses.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                String horseNameText = horseName.getText();
+                String horseColour = (String) horseColours.getSelectedItem();
+                String horseSymbol = (String) horseSymbols.getSelectedItem();
+                //String selectedHorse = (String) horseNames.getSelectedItem();
+                int horseIndex = horseNames.getSelectedIndex();
+                Horse h = new Horse((char) (horseIndex + 97), horseNameText);
+                horseList[horseIndex] = h;
+                h.setColour(horseColour);
+                h.setSymbol(horseSymbol.charAt(0));
+                horseNames.removeItemAt(horseIndex);
+                horseNames.insertItemAt(horseNameText, horseIndex);
+                horseNames.setSelectedIndex(horseIndex);
+                horseName.setText("");
+                horseColours.setSelectedIndex(0);
+                //horseFrame.setVisible(false);
+
+            }
+        });
     }
 
 }
