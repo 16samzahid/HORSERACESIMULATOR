@@ -11,6 +11,7 @@ public class HorseRaceGUI extends JFrame {
     JComboBox<String> trackLength;
     JTextArea raceResults;
     Horse[] horseList = new Horse[5];
+    private Race r;
     HorseRaceGUI() {
 
         //new race textarea where the race will be displayed
@@ -77,5 +78,12 @@ public class HorseRaceGUI extends JFrame {
         numberPanel.add(laneNum);
         numberPanel.add(horsesLabel);
         numberPanel.add(horseNum);
+
+        //declare a new race using values provided from sliders and dropdown
+        r = new Race(trackLength.getSelectedIndex(), horseNum.getValue(), laneNum.getValue());
+
+        
+
     }
+
 }
